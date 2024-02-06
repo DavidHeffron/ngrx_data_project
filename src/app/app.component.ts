@@ -33,6 +33,8 @@ export class AppComponent implements OnInit {
             this.store.dispatch(login({user: JSON.parse(userProfile)}));
         }
 
+        //This subscription is to show loading symbol whenever a route transition is occurring
+        //and stop loading symbol once the transistion is complete
         this.router.events.subscribe(event => {
             switch (true) {
                 case event instanceof NavigationStart: {

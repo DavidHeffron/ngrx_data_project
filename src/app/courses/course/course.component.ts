@@ -18,33 +18,31 @@ import {LessonEntityService} from '../services/lesson-entity.service';
 export class CourseComponent implements OnInit {
 
     course$: Observable<Course>;
-
     loading$: Observable<boolean>;
-
     lessons$: Observable<Lesson[]>;
-
     displayedColumns = ['seqNo', 'description', 'duration'];
-
     nextPage = 0;
 
     constructor(
         private coursesService: CourseEntityService,
         private lessonsService: LessonEntityService,
-        private route: ActivatedRoute) {
-
-    }
+        private route: ActivatedRoute) {}
 
     ngOnInit() {
 
         const courseUrl = this.route.snapshot.paramMap.get('courseUrl');
 
+        //gets courses from the store
         this.course$ = this.coursesService.entities$
             .pipe(
+                //all courses and find the one with given url
                 map(courses => courses.find(course => course.url == courseUrl))
             );
 
+        //gets lessons from the store
         this.lessons$ = this.lessonsService.entities$
             .pipe(
+                //withLatestFrom combines the two observables 
                 withLatestFrom(this.course$),
                 tap(([lessons, course]) => {
                     if (this.nextPage == 0) {
@@ -60,14 +58,13 @@ export class CourseComponent implements OnInit {
     }
 
     loadLessonsPage(course: Course) {
+        //implementing paging with ngrx data
         this.lessonsService.getWithQuery({
             'courseId': course.id.toString(),
             'pageNumber': this.nextPage.toString(),
             'pageSize': '3'
         });
-
         this.nextPage += 1;
-
     }
 
 }

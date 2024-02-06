@@ -16,53 +16,39 @@ import {CourseEntityService} from '../services/course-entity.service';
 })
 export class HomeComponent implements OnInit {
 
-    promoTotal$: Observable<number>;
+  promoTotal$: Observable<number>;
+  beginnerCourses$: Observable<Course[]>;
+  advancedCourses$: Observable<Course[]>;
 
-    beginnerCourses$: Observable<Course[]>;
+  constructor(private dialog: MatDialog, private coursesService: CourseEntityService) {}
 
-    advancedCourses$: Observable<Course[]>;
-
-    constructor(
-      private dialog: MatDialog,
-      private coursesService: CourseEntityService) {
-
-    }
-
-    ngOnInit() {
-      this.reload();
-    }
+  ngOnInit() {
+    this.reload();
+  }
 
   reload() {
-
+    //Set beginner courses as courses from the store whose category == BEGINNER
     this.beginnerCourses$ = this.coursesService.entities$
       .pipe(
         map(courses => courses.filter(course => course.category == 'BEGINNER'))
       );
-
     this.advancedCourses$ = this.coursesService.entities$
       .pipe(
         map(courses => courses.filter(course => course.category == 'ADVANCED'))
       );
-
     this.promoTotal$ = this.coursesService.entities$
         .pipe(
             map(courses => courses.filter(course => course.promo).length)
         );
-
   }
 
   onAddCourse() {
-
+    console.log('he')
     const dialogConfig = defaultDialogConfig();
-
     dialogConfig.data = {
       dialogTitle:"Create Course",
       mode: 'create'
     };
-
     this.dialog.open(EditCourseDialogComponent, dialogConfig);
-
   }
-
-
 }

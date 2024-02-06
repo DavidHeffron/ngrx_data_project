@@ -12,46 +12,34 @@ import {CourseEntityService} from '../services/course-entity.service';
 })
 export class CoursesCardListComponent implements OnInit {
 
-    @Input()
-    courses: Course[];
-
-    @Output()
-    courseChanged = new EventEmitter();
+    @Input() courses: Course[];
+    @Output() courseChanged = new EventEmitter();
 
     constructor(
       private dialog: MatDialog,
       private courseService: CourseEntityService) {
     }
 
-    ngOnInit() {
-
-    }
+    ngOnInit() {}
 
     editCourse(course:Course) {
-
-        const dialogConfig = defaultDialogConfig();
-
-        dialogConfig.data = {
-          dialogTitle:"Edit Course",
-          course,
-          mode: 'update'
-        };
-
-        this.dialog.open(EditCourseDialogComponent, dialogConfig)
-          .afterClosed()
-          .subscribe(() => this.courseChanged.emit());
-
+      const dialogConfig = defaultDialogConfig();
+      dialogConfig.data = {
+        dialogTitle:"Edit Course",
+        course,
+        mode: 'update'
+      };
+      this.dialog.open(EditCourseDialogComponent, dialogConfig)
+        .afterClosed()
+        .subscribe(() => this.courseChanged.emit());
     }
 
   onDeleteCourse(course:Course) {
-
-        this.courseService.delete(course)
-            .subscribe(
-                () => console.log("Delete completed"),
-                err => console.log("Deleted failed", err)
-            );
-
-
+    this.courseService.delete(course)
+      .subscribe(
+        () => console.log("Delete completed"),
+        err => console.log("Deleted failed", err)
+      );
   }
 
 }

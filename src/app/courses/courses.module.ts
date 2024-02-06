@@ -48,13 +48,17 @@ export const coursesRoutes: Routes = [
     }
 ];
 
+//Allows us to give the correct sort order
 const entityMetadata: EntityMetadataMap = {
     Course: {
+        //sorts data
         sortComparer: compareCourses,
+        //gives results right away instead of waiting for response for api
         entityDispatcherOptions: {
             optimisticUpdate: true
         }
     },
+    //Add entity for each type of data to be stored
     Lesson: {
         sortComparer: compareLessons
     }
@@ -109,7 +113,7 @@ export class CoursesModule {
         private coursesDataService: CoursesDataService) {
 
         eds.registerMetadataMap(entityMetadata);
-
+        //allows us to interact with data in the store
         entityDataService.registerService('Course', coursesDataService);
 
     }

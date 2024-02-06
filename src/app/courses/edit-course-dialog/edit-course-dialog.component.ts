@@ -15,13 +15,9 @@ import {CourseEntityService} from '../services/course-entity.service';
 export class EditCourseDialogComponent {
 
     form: UntypedFormGroup;
-
     dialogTitle: string;
-
     course: Course;
-
     mode: 'create' | 'update';
-
     loading$: Observable<boolean>;
 
     constructor(
@@ -58,34 +54,23 @@ export class EditCourseDialogComponent {
     }
 
     onSave() {
-
+        //create new var of type course and combine the values of this.course and form, with form overwritting overlapping values
         const course: Course = {
             ...this.course,
             ...this.form.value
         };
-
         if (this.mode == 'update') {
-
             this.coursesService.update(course);
-
             this.dialogRef.close();
-        } else if (this.mode == 'create') {
-
+        }
+        else if (this.mode == 'create') {
             this.coursesService.add(course)
                 .subscribe(
                     newCourse => {
-
                         console.log('New Course', newCourse);
-
                         this.dialogRef.close();
-
                     }
                 );
-
         }
-
-
     }
-
-
 }

@@ -15,10 +15,11 @@ export class CoursesDataService extends DefaultDataService<Course> {
         super('Course', http, httpUrlGenerator);
 
     }
-
+    //use this to map response to an array of courses
     getAll(): Observable<Course[]> {
         return this.http.get('/api/courses')
             .pipe(
+                //gets response and accesses the payload of the res
                 map(res => res["payload"])
             );
     }
